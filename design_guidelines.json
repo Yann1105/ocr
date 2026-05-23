@@ -1,0 +1,122 @@
+{
+  "theme": "light",
+  "archetype": "4 (Swiss & High-Contrast)",
+  "design_philosophy": "A highly functional, 'Control Room' environment designed for precision data extraction. The aesthetic blends Swiss Brutalism with modern SaaS utility. The UI feels like a digital processing plant: sharp, clear, and unopinionated, allowing the data (CSV) to take center stage. We use stark contrasts, strict grid systems, and mono-spaced fonts for data to convey absolute authority and clarity.",
+  "typography": {
+    "fonts": {
+      "headings": "Cabinet Grotesk",
+      "body": "IBM Plex Sans",
+      "data_and_code": "IBM Plex Mono",
+      "instructions_to_agent": "Ensure fonts are imported via Google Fonts or Fontshare in the main index.css or layout."
+    },
+    "scale": {
+      "h1": "text-4xl sm:text-5xl tracking-tight font-bold",
+      "h2": "text-2xl sm:text-3xl tracking-tight font-semibold",
+      "h3": "text-xl font-medium",
+      "body": "text-base leading-relaxed",
+      "data_cells": "text-sm font-mono tracking-tight",
+      "overline": "text-xs uppercase tracking-[0.2em] font-semibold"
+    }
+  },
+  "colors": {
+    "background": {
+      "base": "#F9F9F8",
+      "surface": "#FFFFFF",
+      "subtle": "#F3F4F6"
+    },
+    "text": {
+      "primary": "#111110",
+      "secondary": "#4B5563",
+      "muted": "#9CA3AF"
+    },
+    "brand_and_actions": {
+      "primary": "#002FA7",
+      "primary_hover": "#00227A",
+      "primary_foreground": "#FFFFFF",
+      "border": "#E5E7EB",
+      "border_focus": "#002FA7"
+    },
+    "rules": [
+      "Tinted Grey Rule: Greys should have a very subtle cool/blue tint to feel intentional, not muddy.",
+      "Primary color (International Klein Blue #002FA7) is reserved ONLY for primary actions (Upload, Transcrire, Download).",
+      "No gradients. Color is function only."
+    ]
+  },
+  "spacing_and_layout": {
+    "container_padding": "p-8 md:p-12",
+    "grid_system": "Control Room Grid (Dense, Data-heavy)",
+    "page_layout": {
+      "wrapper": "grid grid-cols-1 md:grid-cols-4 min-h-screen bg-[#F9F9F8]",
+      "sidebar": "col-span-1 border-r border-[#E5E7EB] bg-white h-full overflow-y-auto",
+      "main_content": "col-span-1 md:col-span-3 p-8 flex flex-col gap-8 h-full overflow-y-auto"
+    },
+    "surface_strategy": "Grid Borders (The 'Technical' Look). Use sharp edges, minimal border-radius (rounded-none or max rounded-sm). Emphasize structural 1px borders."
+  },
+  "components": {
+    "buttons": {
+      "style": "rounded-sm font-medium transition-all duration-200",
+      "primary": "bg-[#002FA7] text-white hover:bg-[#00227A] shadow-sm",
+      "outline": "border border-[#E5E7EB] bg-white text-[#111110] hover:border-[#111110] hover:bg-gray-50",
+      "ghost": "hover:bg-[#F3F4F6] text-[#4B5563]"
+    },
+    "file_upload_zone": {
+      "layout": "w-full border-2 border-dashed border-[#E5E7EB] hover:border-[#002FA7] hover:bg-blue-50/30 transition-colors duration-300 p-12 flex flex-col items-center justify-center gap-4 bg-white rounded-sm cursor-pointer relative group",
+      "typography": "text-center",
+      "icon_library": "lucide-react",
+      "icon_size": "w-12 h-12 text-[#9CA3AF] group-hover:text-[#002FA7]",
+      "text_content_fr": "Glissez-déposez votre document ici ou cliquez pour parcourir. (Formats: JPG, PNG, PDF)"
+    },
+    "data_table_csv": {
+      "wrapper": "w-full overflow-x-auto border border-[#E5E7EB] bg-white rounded-sm shadow-sm",
+      "table": "w-full text-left border-collapse",
+      "th": "bg-[#F9F9F8] border-b border-[#E5E7EB] p-3 text-xs uppercase tracking-[0.1em] text-[#4B5563] font-semibold sticky top-0",
+      "td": "border-b border-r border-[#E5E7EB] p-0 relative",
+      "input_inline": "w-full h-full p-3 font-mono text-sm text-[#111110] bg-transparent border-none focus:ring-2 focus:ring-[#002FA7] focus:outline-none",
+      "note": "The last cell in a row should not have a right border."
+    },
+    "model_selector": {
+      "style": "flex items-center gap-4 p-4 border border-[#E5E7EB] bg-white rounded-sm",
+      "implementation": "Use shadcn/ui Select or ToggleGroup component, customized to have sharp edges and high-contrast active states."
+    },
+    "history_sidebar": {
+      "item": "p-4 border-b border-[#E5E7EB] hover:bg-[#F9F9F8] cursor-pointer transition-colors flex flex-col gap-1",
+      "date": "text-xs text-[#9CA3AF] font-mono",
+      "filename": "text-sm font-medium text-[#111110] truncate"
+    }
+  },
+  "motion": {
+    "hover_states": "Crisp and immediate. Buttons drop a subtle shadow or slightly darken background. Borders snap to focus color.",
+    "upload_zone": "Use a subtle 'Tracing Beam' or outline highlight effect when a file is dragged over. No bouncy animations.",
+    "transitions": "transition-all duration-200 ease-in-out"
+  },
+  "media": {
+    "image_urls": [
+      {
+        "category": "empty_state_illustration",
+        "description": "Abstract minimalist 3D composition of floating physical paper sheets magically converting into a structured digital grid. Use this in the main content area when no file is uploaded or selected, above or near the upload zone, to add visual polish.",
+        "url": "https://static.prod-images.emergentagent.com/jobs/07409a9d-0182-413b-9568-5432b49bc1de/images/df93acf8bad154c6d161a7a301fdf4af6cdc00b3ecc8ac4a1d97cd9d06247e2d.png"
+      }
+    ]
+  },
+  "icons": {
+    "library": "lucide-react",
+    "instructions": "Use lucide-react for all UI icons (Upload, Download, History, FileText, Settings, ChevronRight). Keep stroke width at 1.5 or 2 for a crisp, technical look."
+  },
+  "testing_attributes": {
+    "upload_zone": "data-testid='file-upload-zone'",
+    "model_select": "data-testid='model-selector'",
+    "transcribe_button": "data-testid='transcribe-button'",
+    "csv_table": "data-testid='csv-data-table'",
+    "download_button": "data-testid='download-csv-button'",
+    "history_item": "data-testid='history-list-item'"
+  },
+  "instructions_to_main_agent": [
+    "Strictly apply the French language for all UI elements ('Historique', 'Transcrire', 'Télécharger CSV', etc.).",
+    "Do NOT use 'Inter' font. Use 'Cabinet Grotesk' for headings, 'IBM Plex Sans' for UI, and 'IBM Plex Mono' strictly for the CSV data table content.",
+    "Implement the 'Control Room' grid layout: A persistent left sidebar for History (25% width on desktop) and the main operational zone on the right (75% width).",
+    "Make the CSV Data Table fully editable inline. Use standard HTML inputs inside table cells, stripped of default borders, that fill the cell and show a sharp 2px #002FA7 focus ring on click.",
+    "Ensure the hero/empty state image provided in media.image_urls is displayed elegantly when the user has not yet uploaded a document.",
+    "Do not use generic Shadcn soft-rounded cards. Override Shadcn border-radius to 'rounded-sm' or 'rounded-none' for a technical, brutalist feel.",
+    "Ensure all buttons have explicit hover text colors to guarantee APCA contrast compliance."
+  ]
+}
