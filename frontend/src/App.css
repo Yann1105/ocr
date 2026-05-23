@@ -1,34 +1,305 @@
-.App-logo {
-    height: 40vmin;
-    pointer-events: none;
+/* ===== LAYOUT ===== */
+.app-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  min-height: 100vh;
+  background-color: #F9F9F8;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-        animation: App-logo-spin infinite 20s linear;
-    }
+@media (min-width: 768px) {
+  .app-grid {
+    grid-template-columns: 280px 1fr;
+  }
 }
 
-.App-header {
-    background-color: #0f0f10;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
+.sidebar {
+  display: none;
+  border-right: 1px solid #E5E7EB;
+  background: #FFFFFF;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  overflow-y: auto;
 }
 
-.App-link {
-    color: #61dafb;
+@media (min-width: 768px) {
+  .sidebar {
+    display: block;
+  }
 }
 
-@keyframes App-logo-spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+.main-area {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 32px;
+  min-height: 100vh;
+  max-width: 960px;
+}
+
+/* ===== HEADER ===== */
+.app-header {
+  padding-bottom: 16px;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-icon {
+  width: 40px;
+  height: 40px;
+  background-color: #002FA7;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.brand-title {
+  font-family: 'Cabinet Grotesk', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #111110;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.brand-subtitle {
+  font-size: 0.75rem;
+  color: #9CA3AF;
+  margin: 2px 0 0 0;
+}
+
+/* ===== CONTROLS ===== */
+.controls-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.model-selector-block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.control-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+  color: #4B5563;
+}
+
+.model-toggle {
+  display: flex;
+  border: 1px solid #E5E7EB;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #FFFFFF;
+}
+
+.model-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 8px 14px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  border-right: 1px solid #E5E7EB;
+  min-width: 130px;
+}
+
+.model-btn:last-child {
+  border-right: none;
+}
+
+.model-btn:hover {
+  background-color: #F3F4F6;
+}
+
+.model-btn--active {
+  background-color: #002FA7 !important;
+}
+
+.model-btn--active .model-provider,
+.model-btn--active .model-name {
+  color: #FFFFFF !important;
+}
+
+.model-provider {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #9CA3AF;
+  font-weight: 600;
+}
+
+.model-name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #111110;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.transcribe-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background-color: #002FA7;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  white-space: nowrap;
+  height: 44px;
+}
+
+.transcribe-btn:hover:not(.transcribe-btn--disabled) {
+  background-color: #00227A;
+}
+
+.transcribe-btn--disabled {
+  background-color: #9CA3AF;
+  cursor: not-allowed;
+}
+
+/* ===== ERROR ===== */
+.error-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background-color: #FEF2F2;
+  border: 1px solid #FCA5A5;
+  border-radius: 4px;
+  color: #DC2626;
+  font-size: 0.875rem;
+}
+
+/* ===== RESULTS ===== */
+.results-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.results-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.results-title {
+  font-family: 'Cabinet Grotesk', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #111110;
+  margin: 0;
+}
+
+.results-meta {
+  font-size: 0.75rem;
+  color: #9CA3AF;
+  font-family: 'IBM Plex Mono', monospace;
+  margin: 2px 0 0 0;
+}
+
+.download-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background-color: #FFFFFF;
+  color: #002FA7;
+  border: 1px solid #002FA7;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.download-btn:hover {
+  background-color: #002FA7;
+  color: #FFFFFF;
+}
+
+/* ===== EMPTY STATE ===== */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 48px 24px;
+  text-align: center;
+}
+
+.empty-state-img {
+  width: 220px;
+  height: auto;
+  opacity: 0.9;
+}
+
+.empty-state-text {
+  font-size: 0.875rem;
+  color: #9CA3AF;
+  max-width: 360px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ===== LOADING STATE ===== */
+.loading-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 24px;
+}
+
+.loading-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.loading-text {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #111110;
+  margin: 0;
+}
+
+.loading-sub {
+  font-size: 0.8rem;
+  color: #9CA3AF;
+  margin: 0;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.spin-icon {
+  animation: spin 1s linear infinite;
 }
