@@ -143,7 +143,9 @@ function useToast() {
         listeners.splice(index, 1)
       }
     };
-  }, [state])
+  // setState is a stable reference from React.useState; listeners is module-level.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return {
     ...state,

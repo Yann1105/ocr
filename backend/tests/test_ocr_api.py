@@ -125,7 +125,7 @@ class TestDeleteHistory:
         # Delete it
         del_res = requests.delete(f"{BASE_URL}/api/history/{record_id}")
         assert del_res.status_code == 200
-        assert del_res.json().get("success") is True
+        assert del_res.json().get("success") == True
 
         # Verify it's gone
         history_res = requests.get(f"{BASE_URL}/api/history")

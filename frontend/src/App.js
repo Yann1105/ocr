@@ -1,15 +1,10 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState } from "react";
 import axios from "axios";
-import {
-  FileText,
-  Download,
-  RotateCw,
-  Loader2,
-  AlertCircle,
-} from "lucide-react";
+import { FileText, Download, RotateCw, Loader2, AlertCircle } from "lucide-react";
 import HistorySidebar from "./components/HistorySidebar";
 import UploadZone from "./components/UploadZone";
 import CsvTable from "./components/CsvTable";
+import { useHistory } from "./hooks/useHistory";
 import "./App.css";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -20,36 +15,16 @@ const MODELS = [
   { id: "claude-sonnet-4-6", label: "Claude Sonnet 4.6", provider: "Anthropic" },
 ];
 
-function App() {
+// ─── File-upload state helpers ────────────────────────────────────────────────
+
+function useFileUpload() {
   const [file, setFile] = useState(null);
   const [filePreview, setFilePreview] = useState(null);
-  const [model, setModel] = useState("gpt-4o");
-  const [csvContent, setCsvContent] = useState("");
-  const [currentFilename, setCurrentFilename] = useState("");
-  const [isTranscribing, setIsTranscribing] = useState(false);
-  const [error, setError] = useState("");
-  const [history, setHistory] = useState([]);
-  const [activeHistoryId, setActiveHistoryId] = useState(null);
 
-  const loadHistory = useCallback(async () => {
-    try {
-      const res = await axios.get(`${API}/history`);
-      setHistory(res.data);
-    } catch (err) {
-      console.error("Failed to load history:", err);
-    }
-  }, []);
-
-  useEffect(() => {
-    loadHistory();
-  }, [loadHistory]);
-
-  const handleFileSelect = (selectedFile) => {
-    setFile(selectedFile);
-    setError("");
-    if (selectedFile.type.startsWith("image/")) {
-      const url = URL.createObjectURL(selectedFile);
-      setFilePreview(url);
+  const handleFileSelect = (selected) => {
+    setFile(selected);
+    if (selected.type.startsWith("image/")) {
+      setFilePreview(URL.createObjectURL(selected));
     } else {
       setFilePreview(null);
     }
@@ -59,8 +34,34 @@ function App() {
     if (filePreview) URL.revokeObjectURL(filePreview);
     setFile(null);
     setFilePreview(null);
-    setError("");
   };
+
+  return { file, filePreview, handleFileSelect, handleClear };
+}
+
+// ─── CSV stats helper ─────────────────────────────────────────────────────────
+
+function getTableStats(csvContent) {
+  if (!csvContent) return null;
+  const lines = csvContent.split("\n").filter((l) => l.trim());
+  const cols = lines[0]?.split(";").length || 0;
+  const dataRows = lines.length - 1;
+  return `${dataRows} ligne${dataRows !== 1 ? "s" : ""} · ${cols} colonne${cols !== 1 ? "s" : ""}`;
+}
+
+// ─── App ─────────────────────────────────────────────────────────────────────
+
+function App() {
+  const { history, activeHistoryId, setActiveHistoryId, loadHistory, handleHistoryDelete } =
+    useHistory(API);
+
+  const { file, filePreview, handleFileSelect, handleClear } = useFileUpload();
+
+  const [model, setModel] = useState("gpt-4o");
+  const [csvContent, setCsvContent] = useState("");
+  const [currentFilename, setCurrentFilename] = useState("");
+  const [isTranscribing, setIsTranscribing] = useState(false);
+  const [error, setError] = useState("");
 
   const handleTranscribe = async () => {
     if (!file) return;
@@ -83,8 +84,7 @@ function App() {
       await loadHistory();
     } catch (err) {
       setError(
-        err.response?.data?.detail ||
-          "Erreur lors de la transcription. Veuillez réessayer."
+        err.response?.data?.detail || "Erreur lors de la transcription. Veuillez réessayer."
       );
     } finally {
       setIsTranscribing(false);
@@ -112,27 +112,7 @@ function App() {
     setError("");
   };
 
-  const handleHistoryDelete = async (id) => {
-    try {
-      await axios.delete(`${API}/history/${id}`);
-      if (activeHistoryId === id) {
-        setCsvContent("");
-        setCurrentFilename("");
-        setActiveHistoryId(null);
-      }
-      await loadHistory();
-    } catch (err) {
-      console.error("Failed to delete:", err);
-    }
-  };
-
-  const getTableStats = () => {
-    if (!csvContent) return null;
-    const lines = csvContent.split("\n").filter((l) => l.trim());
-    const cols = lines[0]?.split(";").length || 0;
-    const dataRows = lines.length - 1;
-    return `${dataRows} ligne${dataRows !== 1 ? "s" : ""} · ${cols} colonne${cols !== 1 ? "s" : ""}`;
-  };
+  const stats = getTableStats(csvContent);
 
   return (
     <div className="app-grid">
@@ -223,9 +203,7 @@ function App() {
             <div className="results-header">
               <div>
                 <h2 className="results-title">Résultat CSV</h2>
-                {getTableStats() && (
-                  <p className="results-meta">{getTableStats()}</p>
-                )}
+                {stats && <p className="results-meta">{stats}</p>}
               </div>
               <button
                 data-testid="download-csv-button"
@@ -253,12 +231,15 @@ function App() {
           )
         )}
 
-        {/* Loading state (full results area) */}
+        {/* Loading overlay */}
         {isTranscribing && (
           <section className="loading-state">
             <div className="loading-inner">
               <Loader2 size={32} className="spin-icon text-[#002FA7]" />
-              <p className="loading-text">Analyse en cours avec {model === "gpt-4o" ? "GPT-4o" : "Claude Sonnet 4.6"}...</p>
+              <p className="loading-text">
+                Analyse en cours avec{" "}
+                {model === "gpt-4o" ? "GPT-4o" : "Claude Sonnet 4.6"}...
+              </p>
               <p className="loading-sub">Cela peut prendre quelques secondes</p>
             </div>
           </section>
