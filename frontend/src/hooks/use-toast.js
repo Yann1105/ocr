@@ -143,9 +143,9 @@ function useToast() {
         listeners.splice(index, 1)
       }
     };
-  // setState is a stable reference from React.useState; listeners is module-level.
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  // setState is a stable React.useState setter (never changes identity).
+  // listeners is module-level. index is a local variable inside the cleanup.
+  }, [setState])
 
   return {
     ...state,
